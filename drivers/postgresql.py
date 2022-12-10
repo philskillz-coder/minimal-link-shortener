@@ -1,6 +1,7 @@
 from typing import Optional
 
 from drivers.base import BaseDriver
+import asyncpg
 
 
 class Driver(BaseDriver):

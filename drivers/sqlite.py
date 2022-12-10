@@ -1,7 +1,7 @@
 from typing import Optional
 
 from drivers.base import BaseDriver
-
+import sqlite3
 
 class Driver(BaseDriver):
     REQUIRED_ARGS = [
