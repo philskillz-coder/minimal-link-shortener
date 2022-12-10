@@ -84,6 +84,11 @@ driver: drivers.base.BaseDriver = importlib.import_module(config["driver"]).Driv
 app = Quart(__name__)
 
 
+@app.before_serving
+async def before_serving():
+    await driver.setup()
+
+
 @app.route("/create", methods=["POST"])
 async def create():
     authorization = request.headers.get("authorization")

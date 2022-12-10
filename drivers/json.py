@@ -55,7 +55,8 @@ class Driver(BaseDriver):
     async def setup(self):
         # create data file if not exists
         if not os.path.isfile(self.file):
-            os.makedirs(self.file, exist_ok=True)
+            from pathlib import Path
+            Path(os.path.dirname(self.file)).mkdir(parents=True, exist_ok=True)
             self.urls = []
             self.counter = 0
         else:
@@ -69,7 +70,7 @@ class Driver(BaseDriver):
         self.urls.append(url)
 
         async with aiofiles.open(self.file, "wb") as f:
-            await f.write(json.dumps(self.urls, indent=4))
+            await f.write(json.dumps(self.urls, indent=4).encode())
 
         return name
 
@@ -77,4 +78,4 @@ class Driver(BaseDriver):
         decoded = self.hashids.decode(name)
         if not decoded:
             return None
-        return decoded[0]
+        return self.urls[decoded[0]]
