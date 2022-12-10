@@ -2,6 +2,7 @@
 
 ## Available (working) database drivers:
 - json
+- other drivers will be added soon
 
 ## How to install:
 ````
