@@ -1,9 +1,12 @@
 from typing import Optional
 
+from hashids import Hashids
+
 from drivers.base import BaseDriver
 import asyncpg
 
 
+# noinspection PyTypeChecker
 class Driver(BaseDriver):
     NAME = "postgresql"
     REQUIRED_ARGS = [
@@ -69,15 +72,39 @@ class Driver(BaseDriver):
         }
     ]
 
+    __table__ = "CREATE TABLE IF NOT EXISTS urls (id SERIAL PRIMARY KEY NOT NULL UNIQUE, url TEXT);"
+
     def __init__(self, host: str, port: int, database: str, user: str, password: str, length: int, secret: str,
                  alphabet: str):
-        pass
+        self.host = host
+        self.port = port
+        self.database = database
+        self.user = user
+        self.password = password
+        self.hashids = Hashids(secret, length, alphabet)
+        self.connection: asyncpg.Connection = None
 
     async def setup(self):
-        pass
+        self.connection: asyncpg.Connection = await asyncpg.connect(
+            host=self.host,
+            port=self.port,
+            user=self.user,
+            database=self.database,
+            password=self.password
+        )
+        await self.connection.execute(self.__table__)
 
-    async def create_url(self, url: str):
-        raise NotImplementedError("Not Implemented")
+    async def create_url(self, url: str) -> str:
+        _id, = await self.connection.fetchrow("INSERT INTO urls(url) VALUES($1) RETURNING id;", url)
+        return self.hashids.encode(_id)
 
     async def get_url(self, name: str) -> Optional[str]:
-        raise NotImplementedError("Not Implemented")
+        decoded = self.hashids.decode(name)
+        if not decoded:
+            return None
+
+        url = await self.connection.fetchrow("SELECT url FROM urls WHERE id = $1", decoded)
+        if url is None:
+            return None
+
+        return url[0]

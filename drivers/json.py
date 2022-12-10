@@ -76,6 +76,6 @@ class Driver(BaseDriver):
 
     async def get_url(self, name: str) -> Optional[str]:
         decoded = self.hashids.decode(name)
-        if not decoded:
+        if decoded is None or not 0 < decoded <= self.counter:
             return None
         return self.urls[decoded[0]]

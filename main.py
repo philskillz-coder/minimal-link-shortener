@@ -5,83 +5,20 @@ import importlib
 import drivers.base
 import argparse
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--configure", action="store_true")
-
-n = parser.parse_args()
-
-
-def configure():
-    import drivers
-
-    http_bind = input("Enter http bind (127.0.0.1): ") or "127.0.0.1"
-    print("http bind is: %s" % http_bind)
-
-    print()
-
-    http_port = input("Enter http port (5001): ") or 5001
-    print("http port is: %s" % http_port)
-
-    print()
-
-    authorization = input("Enter authorization: ")
-    print("authorization key is: <NOT DISPLAYED>")
-
-    print()
-    print("#" * 30)
-    print()
-
-    print("Available database drivers:\n" + "\n".join(
-        f"({i}): {name.NAME}" for i, name in enumerate(drivers.CUSTOM_DRIVERS)))
-
-    _driver = int(input("(Number) >>> "))
-    driver_class = drivers.CUSTOM_DRIVERS[_driver]
-    print("Database driver is: %s" % driver_class.NAME)
-
-    print()
-
-    print("Driver configuration:")
-    driver_config = {}
-    for arg in driver_class.REQUIRED_ARGS:
-        arg_opt = "[REQUIRED] " if arg["required"] else ""
-        arg_disp = arg["display"]
-        arg_def = f" ({(arg['default'])})" if arg.get("default") else ""
-
-        print('\"\"\"', arg["description"], '\"\"\"')
-        value = arg["type"](input(f"{arg_opt}{arg_disp}{arg_def}: ") or arg.get("default"))
-        print(
-
-        )
-
-        driver_config[arg["name"]] = value
-
-    with open("config.json", "w") as file:
-        data = {
-            "http_bind": http_bind,
-            "http_port": http_port,
-            "authorization": authorization,
-            "driver": "drivers.%s" % driver_class.NAME,
-            "driver_config": driver_config
-        }
-        json.dump(data, file, indent=4)
-
-    print()
-    print("#"*30)
-    print()
-    print("Configuration done!")
-    print("You can reconfigure the program with > python3 main.py --configure")
-    print("Run program again.")
+if not os.path.isfile("config.json"):
+    print("Please run the configure.py file in order to create a configuration file.")
+    print("Please run the configure.py file in order to create a configuration file.")
+    print("Please run the configure.py file in order to create a configuration file.")
     exit(0)
-
-
-if not os.path.isfile("config.json") or n.configure:
-    configure()
-    # end
 
 with open("config.json", "r") as f:
     config = json.load(f)
 
-driver: drivers.base.BaseDriver = importlib.import_module(config["driver"]).Driver(**config["driver_config"])
+driver: drivers.base.BaseDriver = importlib.import_module(
+    config["driver_config"]["driver"]
+).Driver(
+    **config["driver_config"]["args"]
+)
 app = Quart(__name__)
 
 
@@ -112,6 +49,7 @@ async def get(code):
     if url is None:
         return 404
     return redirect(url, 302)
+
 
 app.run(
     host=config["http_bind"],

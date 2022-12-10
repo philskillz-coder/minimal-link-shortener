@@ -2,6 +2,7 @@
 
 ## Available (working) database drivers:
 - json
+- postgresql
 - other drivers will be added soon
 
 ## How to install:
@@ -10,7 +11,7 @@ git clone https://github.com/philskillz-coder/minimal-link-shortener.git
 cd minimal-link-shortener
 pip3 install -r requirements.txt
 pip3 install markupsafe==2.0.1
-python3 main.py
+python3 configure.py
 ````
 
 ## How to reconfigure the app:
