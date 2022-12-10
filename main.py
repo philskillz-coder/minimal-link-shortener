@@ -69,6 +69,7 @@ def configure():
     print("#"*30)
     print()
     print("Configuration done!")
+    print("You can reconfigure the program with > python3 main.py --configure")
     print("Run program again.")
     exit(0)
 
