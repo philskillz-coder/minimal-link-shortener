@@ -55,6 +55,7 @@ class Driver(BaseDriver):
     async def setup(self):
         # create data file if not exists
         if not os.path.isfile(self.file):
+            os.makedirs(self.file, exist_ok=True)
             self.urls = []
             self.counter = 0
         else:
