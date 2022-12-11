@@ -16,7 +16,7 @@ python3 configure.py
 
 ## How to reconfigure the app:
 ````
-python3 main.py --configure
+python3 configure.py [--driver] [--authorization] [--http-bind] [--http-port]
 ````
 
 ## Nginx config:
