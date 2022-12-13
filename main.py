@@ -3,7 +3,6 @@ import json
 import os
 import importlib
 import drivers.base
-import argparse
 
 if not os.path.isfile("config.json"):
     print("Please run the configure.py file in order to create a configuration file.")

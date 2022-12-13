@@ -1,11 +1,24 @@
 # minimal-link-shortener
 
-## Available (working) database drivers:
+Bug/issue reports are appreciated.
+You can report a bug via
+- the repositories [issues page](https://github.com/philskillz-coder/minimal-link-shortener/issues)
+- [Mail](mailto:philipp@theskz.dev) (Please add `gh-LhAwk` in the subject)
+- my [Discord Server](https://discord.gg/QjntPW9fHc)
+- Discord direct message to `Philskillz_#0266`
+
+thanks in advance.
+
+# Install:
+### Available database drivers (needed in the installation step):
 - json
 - postgresql
-- other drivers will be added soon
+- <font color="orange">sqlite</font> (in work)
 
-## How to install:
+other drivers will be added soon
+
+
+### How to install:
 ````
 git clone https://github.com/philskillz-coder/minimal-link-shortener.git
 cd minimal-link-shortener
@@ -14,12 +27,12 @@ pip3 install markupsafe==2.0.1
 python3 configure.py
 ````
 
-## How to reconfigure the app:
+### How to (re)configure the app:
 ````
 python3 configure.py [--driver] [--authorization] [--http-bind] [--http-port]
 ````
 
-## Nginx config:
+### Nginx config:
 If you haven't changed the http bind and port you only have to change your domain and ssl certificate path here.
 ````
 server {

@@ -72,7 +72,7 @@ class Driver(BaseDriver):
         }
     ]
 
-    __table__ = "CREATE TABLE IF NOT EXISTS urls (id SERIAL PRIMARY KEY NOT NULL UNIQUE, url TEXT);"
+    __table__ = "CREATE TABLE IF NOT EXISTS urls (id SERIAL PRIMARY KEY NOT NULL UNIQUE, url TEXT NOT NULL);"
 
     def __init__(self, host: str, port: int, database: str, user: str, password: str, length: int, secret: str,
                  alphabet: str):
