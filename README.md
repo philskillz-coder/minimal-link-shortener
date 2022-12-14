@@ -14,7 +14,7 @@ thanks in advance.
 ### Available database drivers (needed in the installation step):
 - json
 - postgresql
-- <font color="orange">sqlite</font> (in work)
+- sqlite
 
 other drivers will be added soon
 
