@@ -1,4 +1,4 @@
-from quart import Quart, request, jsonify, redirect
+from quart import Quart, request, jsonify, redirect, abort
 import json
 import os
 import importlib
@@ -46,7 +46,7 @@ async def create():
 async def get(code):
     url = await driver.get_url(code)
     if url is None:
-        return 404
+        abort(404)
     return redirect(url, 302)
 
 
