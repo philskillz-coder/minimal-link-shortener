@@ -4,7 +4,7 @@
 Issue reports are appreciated.
 You can report one via
 - the repositories [issues page](https://github.com/philskillz-coder/minimal-link-shortener/issues)
-- [Mail](mailto:github@theskz.dev?subject=Issue%20report%20for%20minimal-link-shortener&body=I%20found%20an%20issue%20in%20the%20minimal-link-shortener%20repository%3A%0D%0A...)
+- [Mail](mailto:github@theskz.dev?subject=Issue%20report%20for%20minimal-link-shortener&body=Repository%20link%3A%0D%0Ahttps%3A%2F%2Fgithub.com%2Fphilskillz-coder%2Fminimal-link-shortener)
 - my [Discord Server](https://discord.gg/QjntPW9fHc)
 - Discord direct message to `Philskillz_#0266`
 
