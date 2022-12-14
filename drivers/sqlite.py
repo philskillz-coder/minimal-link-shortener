@@ -66,7 +66,7 @@ class Driver(BaseDriver):
         if not decoded:
             return None
 
-        async with self.connection.execute("SELECT url FROM urls WHERE id = ?", (decoded,)) as cursor:
+        async with self.connection.execute("SELECT url FROM urls WHERE id = ?", (decoded[0],)) as cursor:
             url = await cursor.fetchone()
             if url is None:
                 return None
