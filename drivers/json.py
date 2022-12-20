@@ -49,7 +49,7 @@ class Driver(BaseDriver):
         self.hashids = Hashids(secret, length, alphabet)
 
         # in setup
-        self.urls: list = None
+        self.urls: dict[str, str] = None
         self.counter: int = None
 
     async def setup(self):
@@ -57,24 +57,33 @@ class Driver(BaseDriver):
         if not os.path.isfile(self.file):
             from pathlib import Path
             Path(os.path.dirname(self.file)).mkdir(parents=True, exist_ok=True)
-            self.urls = []
+            self.urls = {}
             self.counter = 0
         else:
             async with aiofiles.open(self.file, "rb") as f:
                 self.urls = json.loads((await f.read()).decode())
                 self.counter = len(self.urls)
 
-    async def create_url(self, url: str) -> str:
-        name = self.hashids.encode(self.counter)
+    async def create_url(self, url: str, name: Optional[str] = None) -> Optional[str]:
         self.counter += 1
-        self.urls.append(url)
+        if name is not None:
+            if name in self.urls:
+                return None
+            key = name
+        else:
+            key = self.hashids.encode(self.counter)
+
+        self.urls[key] = url
 
         async with aiofiles.open(self.file, "wb") as f:
-            await f.write(json.dumps(self.urls, indent=4).encode())
+            await f.write(json.dumps(self.urls))
 
         return name
 
     async def get_url(self, name: str) -> Optional[str]:
+        if name in self.urls:
+            return self.urls[name]
+
         decoded = self.hashids.decode(name)
         if decoded is None or not 0 < decoded <= self.counter:
             return None
