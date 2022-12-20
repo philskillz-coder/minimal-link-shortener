@@ -72,7 +72,7 @@ class Driver(BaseDriver):
         }
     ]
 
-    __table__ = "CREATE TABLE IF NOT EXISTS urls (id SERIAL PRIMARY KEY NOT NULL UNIQUE, url TEXT NOT NULL);"
+    __table__ = "CREATE TABLE IF NOT EXISTS urls (id SERIAL PRIMARY KEY NOT NULL UNIQUE, name TEXT UNIQUE, url TEXT NOT NULL);"
 
     def __init__(self, host: str, port: int, database: str, user: str, password: str, length: int, secret: str,
                  alphabet: str):
@@ -94,11 +94,23 @@ class Driver(BaseDriver):
         )
         await self.connection.execute(self.__table__)
 
-    async def create_url(self, url: str) -> str:
-        _id, = await self.connection.fetchrow("INSERT INTO urls(url) VALUES($1) RETURNING id;", url)
-        return self.hashids.encode(_id)
+    async def create_url(self, url: str, name: Optional[str] = None) -> Optional[str]:
+        if name is not None:
+            exists, = await self.connection.fetchrow("SELECT EXISTS(SELECT 1 FROM urls WHERE name = $1)", name)
+            if exists:
+                return None
+            await self.connection.execute("INSERT INTO urls(name, url) VALUES($1, $2)", name, url)
+            return name
+        else:
+            _id, = await self.connection.fetchrow("INSERT INTO urls(url) VALUES($1) RETURNING id;", url)
+            return self.hashids.encode(_id)
 
     async def get_url(self, name: str) -> Optional[str]:
+        exists, = await self.connection.fetchrow("SELECT EXISTS(SELECT 1 FROM urls WHERE name = $1)", name)
+        if exists:
+            target, = await self.connection.fetchrow("SELECT url FROM urls WHERE name = $1", name)
+            return target
+
         decoded = self.hashids.decode(name)
         if not decoded:
             return None
