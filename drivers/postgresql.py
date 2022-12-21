@@ -5,7 +5,7 @@ from hashids import Hashids
 from drivers.base import BaseDriver
 import asyncpg
 
-
+#
 # noinspection PyTypeChecker
 class Driver(BaseDriver):
     NAME = "postgresql"
