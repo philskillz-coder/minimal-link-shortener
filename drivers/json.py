@@ -76,15 +76,18 @@ class Driver(BaseDriver):
         self.urls[key] = url
 
         async with aiofiles.open(self.file, "wb") as f:
-            await f.write(json.dumps(self.urls))
+            await f.write(json.dumps(self.urls, indent=4).encode())
 
-        return name
+        return key
 
     async def get_url(self, name: str) -> Optional[str]:
         if name in self.urls:
             return self.urls[name]
 
         decoded = self.hashids.decode(name)
-        if decoded is None or not 0 < decoded <= self.counter:
+        if not decoded:
             return None
+        if not 0 < decoded <= self.counter:
+            return None
+
         return self.urls[decoded[0]]
