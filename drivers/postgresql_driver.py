@@ -116,7 +116,4 @@ class Driver(BaseDriver):
             return None
 
         url = await self.connection.fetchrow("SELECT url FROM urls WHERE id = $1", decoded)
-        if url is None:
-            return None
-
-        return url[0]
+        return None if url is None else url[0]

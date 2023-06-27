@@ -66,13 +66,13 @@ class Driver(BaseDriver):
 
     async def create_url(self, url: str, name: Optional[str] = None) -> Optional[str]:
         self.counter += 1
-        if name is not None:
-            if name in self.urls:
-                return None
-            key = name
-        else:
+        if name is None:
             key = self.hashids.encode(self.counter)
 
+        elif name in self.urls:
+            return None
+        else:
+            key = name
         self.urls[key] = url
 
         async with aiofiles.open(self.file, "wb") as f:
@@ -84,10 +84,7 @@ class Driver(BaseDriver):
         if name in self.urls:
             return self.urls[name]
 
-        decoded = self.hashids.decode(name)
-        if not decoded:
+        if decoded := self.hashids.decode(name):
+            return None if not 0 < decoded <= self.counter else self.urls[decoded[0]]
+        else:
             return None
-        if not 0 < decoded <= self.counter:
-            return None
-
-        return self.urls[decoded[0]]

@@ -81,6 +81,4 @@ class Driver(BaseDriver):
             await cursor.execute("SELECT url FROM urls WHERE id = ?", (decoded[0],))
 
             url = await cursor.fetchone()
-            if url is None:
-                return None
-            return url[0]
+            return None if url is None else url[0]

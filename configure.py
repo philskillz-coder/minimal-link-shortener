@@ -53,7 +53,7 @@ def configure_driver(config: dict):
     print()
     print(f"You selected >>> {driver_class.NAME}")
     print()
-    config["driver"]["using"] = "drivers." + driver_class.NAME
+    config["driver"]["using"] = f"drivers.{driver_class.NAME}"
 
     return config
 
@@ -99,8 +99,8 @@ def configure_new_driver(config: dict):
 
     print()
     print(f"You selected >>> {driver_class.NAME}")
-    config["driver"]["using"] = "drivers." + driver_class.NAME
-    config["driver"]["drivers." + driver_class.NAME] = {}
+    config["driver"]["using"] = f"drivers.{driver_class.NAME}"
+    config["driver"][f"drivers.{driver_class.NAME}"] = {}
 
     print()
     print("#" * 30)
@@ -121,7 +121,7 @@ def configure_new_driver(config: dict):
 
         )
 
-        config["driver"]["drivers." + driver_class.NAME][arg["name"]] = value
+        config["driver"][f"drivers.{driver_class.NAME}"][arg["name"]] = value
 
     return config
 
@@ -130,7 +130,7 @@ def configure_http_bind(config: dict):
     if config.get("http_bind") is None:
         config["http_bind"] = "127.0.0.1"
     http_bind = input(f"Enter http bind ({config['http_bind']}): ") or config['http_bind']
-    print("http bind is: %s" % http_bind)
+    print(f"http bind is: {http_bind}")
     print()
     config["http_bind"] = http_bind
     return config
@@ -140,14 +140,14 @@ def configure_http_port(config: dict):
     if config.get("http_port") is None:
         config["http_port"] = 5001
     http_port = int(input(f"Enter http port ({config['http_port']}): ") or config['http_port'])
-    print("http port is: %s" % http_port)
+    print(f"http port is: {http_port}")
     print()
     config["http_port"] = http_port
     return config
 
 
 def configure_authorization(config: dict):
-    authorization = input(f"Enter authorization: ")
+    authorization = input("Enter authorization: ")
     print("authorization is: <hidden>")
     print()
     config["authorization"] = authorization
