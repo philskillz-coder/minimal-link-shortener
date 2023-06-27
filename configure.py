@@ -171,7 +171,7 @@ def configure_base(config: dict):
 
 def full_config(config: dict):
     config = configure_base(config)
-    config = configure_driver(config)
+    config = configure_new_driver(config)
 
     return config
 
@@ -196,9 +196,6 @@ with open("config.json", "r") as f:
 
 d = False
 if args.driver:
-    _config = configure_driver(_config)
-    d = True
-if args.new_driver:
     _config = configure_new_driver(_config)
     d = True
 if args.http_bind:

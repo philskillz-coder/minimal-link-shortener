@@ -1,4 +1,4 @@
-from drivers import json, postgresql, sqlite
+from drivers import json_driver, postgresql_driver, sqlite_driver
 CUSTOM_DRIVERS = [
-    json.Driver, postgresql.Driver, sqlite.Driver
+    json_driver.Driver, postgresql_driver.Driver, sqlite_driver.Driver
 ]

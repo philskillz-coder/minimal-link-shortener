@@ -4,7 +4,7 @@ from quart import Quart, request, jsonify, redirect, abort
 import json
 import os
 import importlib
-import drivers.base
+import drivers.base_driver
 
 if not os.path.isfile("config.json"):
     print("Please run the configure.py file in order to create a configuration file.")
@@ -15,7 +15,7 @@ if not os.path.isfile("config.json"):
 with open("config.json", "r") as f:
     config = json.load(f)
 
-driver: drivers.base.BaseDriver = importlib.import_module(
+driver: drivers.base_driver.BaseDriver = importlib.import_module(
     config["driver"]["using"]
 ).Driver(
     **config["driver"][config["driver"]["using"]]
