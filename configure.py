@@ -13,7 +13,7 @@ args = parser.parse_args()
 
 
 def configure_driver(config: dict):
-    import drivers.base
+    import drivers.base_driver
     print("#" * 30)
     print()
     print("Driver configuration")
@@ -32,7 +32,7 @@ def configure_driver(config: dict):
         config["driver"] = {}
 
     # noinspection PyTypeChecker
-    driver_class: drivers.base.BaseDriver = None
+    driver_class: drivers.base_driver.BaseDriver = None
     _done = False
     while not _done:
         print()
@@ -60,7 +60,7 @@ def configure_driver(config: dict):
 
 # noinspection PyTypeChecker
 def configure_new_driver(config: dict):
-    import drivers.base
+    import drivers.base_driver
 
     print("#" * 30)
     print()
@@ -79,7 +79,7 @@ def configure_new_driver(config: dict):
     if "driver" not in config:
         config["driver"] = {}
 
-    driver_class: drivers.base.BaseDriver = None
+    driver_class: drivers.base_driver.BaseDriver = None
     _done = False
     while not _done:
         print()
