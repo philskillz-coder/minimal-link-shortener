@@ -16,7 +16,7 @@ with open("config.json", "r") as f:
     config = json.load(f)
 
 driver: drivers.base_driver.BaseDriver = importlib.import_module(
-    config["driver"]["using"]
+    config["driver"]["using"]+"_driver"
 ).Driver(
     **config["driver"][config["driver"]["using"]]
 )
